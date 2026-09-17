@@ -3,6 +3,7 @@ import string
 
 from django.contrib.auth import authenticate
 from django.db import transaction
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView
@@ -19,6 +20,7 @@ from .serializers import (
 class AuthorizationAPIView(CreateAPIView):
     serializer_class = AuthValidateSerializer
 
+    @swagger_auto_schema(request_body=AuthValidateSerializer)
     def post(self, request):
         serializer = AuthValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -44,6 +46,7 @@ class AuthorizationAPIView(CreateAPIView):
 class RegistrationAPIView(CreateAPIView):
     serializer_class = RegisterValidateSerializer
 
+    @swagger_auto_schema(request_body=RegisterValidateSerializer)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
