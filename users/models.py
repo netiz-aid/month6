@@ -9,8 +9,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=20, blank=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-
     objects = CustomUserManager()
+    birthdate = models.DateField(null=True, blank=True)
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["phone_number"]

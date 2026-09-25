@@ -11,8 +11,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token["email"] = user.email
         token["is_staff"] = user.is_staff
+        token["birthdate"] = str(user.birthdate) if user.birthdate else None
         return token
-
 
 class UserBaseSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=150)

@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from common.permissions import IsOwner, IsAnonymous, CanEdit, IsModerator
+from common.validators import validate_product_age
+
 
 from .models import Category, Product, Review
 from .serializers import (
@@ -20,7 +22,7 @@ from .serializers import (
     ReviewValidateSerializer,
 )
 
-PAGE_SIZE = 5
+PAGE_SIZE = 5   
 
 
 class CustomPagination(PageNumberPagination):
@@ -81,6 +83,8 @@ class ProductListCreateAPIView(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         if request.user.is_staff:
             return Response({"detail": "Moderators cannot create products."},status=status.HTTP_403_FORBIDDEN)
+        
+        validate_product_age(request)
         
         serializer = ProductValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
