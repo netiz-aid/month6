@@ -21,6 +21,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "daily_task": {
         "task": "product.tasks.daily_task",
-        "schedule": crontab(hour=0, minute=0),
+        "schedule": crontab(day_of_month="*"),
     },
 }
