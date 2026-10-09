@@ -21,7 +21,7 @@ from .serializers import (
     ReviewSerializer,
     ReviewValidateSerializer,
 )
-
+from.tasks import add 
 
 
 PAGE_SIZE = 5   
@@ -114,6 +114,10 @@ class ProductListCreateAPIView(ListCreateAPIView):
         )
     
     def get(self, request, *args, **kwargs):
+        # from time import sleep
+
+        # sleep(15)
+        add.delay(5,7)
         cached_data = cache.get("product_list")
         if cached_data:
             print("Redis * 20")

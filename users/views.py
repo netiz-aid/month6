@@ -16,7 +16,7 @@ from .serializers import (
     CustomTokenObtainPairSerializer,
     RegisterValidateSerializer,
 )
-
+from .tasks import send_otp_mail    
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -65,6 +65,7 @@ class RegistrationAPIView(CreateAPIView):
             code = "".join(random.choices(string.digits, k=6))
 
             cache.set(f"confirmation_code_{user.id}", code, timeout=300)
+            send_otp_mail.delay(email, code)
 
         return Response(
             status=status.HTTP_201_CREATED,
